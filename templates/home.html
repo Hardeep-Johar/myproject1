@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<img src='{% static "myapp/logo.png" %}' alt="image" width="400px">
+<p></p>
+The time now is: {{ time }}
+<p>
+    <a href="{% url 'holdings' %}">View Holdings</a>
+</p>
+</body>
+</html>
