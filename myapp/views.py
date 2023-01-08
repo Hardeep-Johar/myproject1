@@ -24,6 +24,11 @@ def view_currencies(request):
     data = dict()
     c_list = Currency.objects.all()
     data['currencies'] = c_list
+    from bs4 import BeautifulSoup
+    import requests
+    page = requests.get("https://en.wikipedia.org/wiki/Main_Page")
+    data['wiki_data'] = page.text
+
     return render(request,'currencies.html',context=data)
 
 
