@@ -16,6 +16,7 @@ def maintenance(request):
         print(choice)
         if choice == "currencies":
             support_functions.add_currencies(support_functions.get_currency_list())
+            return view_currencies(request)
     except:
         pass
     return render(request,"maintenance.html",context=data)
@@ -24,11 +25,6 @@ def view_currencies(request):
     data = dict()
     c_list = Currency.objects.all()
     data['currencies'] = c_list
-    from bs4 import BeautifulSoup
-    import requests
-    page = requests.get("https://en.wikipedia.org/wiki/Main_Page")
-    data['wiki_data'] = page.text
-
     return render(request,'currencies.html',context=data)
 
 
