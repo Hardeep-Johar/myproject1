@@ -16,7 +16,7 @@ def maintenance(request):
         print(choice)
         if choice == "currencies":
             support_functions.add_currencies(support_functions.get_currency_list())
-            return view_currencies(request)
+            return render(request, 'currencies.html', context=data)
     except:
         pass
     return render(request,"maintenance.html",context=data)
