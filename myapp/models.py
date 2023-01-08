@@ -28,7 +28,7 @@ class Holding(models.Model):
     value = models.FloatField(default=0.0)
     buy_date = models.DateField()
     def __repr__(self):
-        return self.iso.iso + " " + self.value + " " + self.buy_date
+        return self.iso.iso + " " + str(self.value) + " " + str(self.buy_date)
 
     def __str__(self):
-        return self.iso.iso + " " + self.value + " " + self.buy_datemigr
+        return self.iso.long_name + " " + str(self.value) + " " + str(self.buy_date)
