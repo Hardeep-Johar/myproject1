@@ -21,6 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.home, name ="home"),
     path('maintenance', views.maintenance, name='maintenance'),
+    path('currencies',views.view_currencies, name='currencies'),
     path('new-currency',views.add_currency, name="add_currency"),
     path('view-holdings', views.holdings, name="holdings"),
     path('update-x-rates', views.update_x_rates, name="update"),
