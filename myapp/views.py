@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from myapp import support_functions
-from myapp.models import Currency
+from myapp.models import Currency, AccountHolder
+from django.contrib.auth.forms import UserCreationForm
 import folium
 # Create your views here.
 def home(request):
@@ -44,6 +45,17 @@ def exch_rate(request):
         currency2 = request.GET['currency_to']
         c1 = Currency.objects.get(iso=currency1)
         c2 = Currency.objects.get(iso=currency2)
+        try:
+            user = request.user
+            if user.is_authenticated:
+                account_holder = AccountHolder.objects.get(user=user)
+                account_holder.currencies_visited.add(c1)
+                account_holder.currencies_visited.add(c2)
+                data['currencies_visited'] = account_holder.currencies_visited.all()
+        except:
+            pass
+
+
         support_functions.update_xrates(c1)
 
         data['currency1'] = c1
@@ -75,3 +87,17 @@ def map(request):
     data = dict()
     data['m'] = m
     return render(request,"map.html",context=data)
+
+def register_new_user(request):
+    context = dict()
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+        new_user = form.save()
+        dob = request.POST["dob"]
+        acct_holder = AccountHolder(user=new_user,date_of_birth=dob)
+        acct_holder.save()
+        return render(request,"home.html",context=dict())
+    else:
+        form = UserCreationForm()
+        context['form'] = form
+        return render(request, "registration/register.html", context)
