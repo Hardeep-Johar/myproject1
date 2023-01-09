@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from myapp import support_functions
 from myapp.models import Currency
+import folium
 # Create your views here.
 def home(request):
     data = dict()
@@ -68,3 +69,9 @@ def update_x_rates(request):
     data=dict()
     return render(request,"update_x_rates.html",context=data)
 
+def map(request):
+    m = folium.Map()
+    m = m._repr_html_
+    data = dict()
+    data['m'] = m
+    return render(request,"map.html",context=data)
