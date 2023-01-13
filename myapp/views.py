@@ -81,11 +81,48 @@ def update_x_rates(request):
     data=dict()
     return render(request,"update_x_rates.html",context=data)
 
+
+
 def map(request):
     m = folium.Map()
-    m = m._repr_html_
     data = dict()
-    data['m'] = m
+    try:
+        request.GET['reset']
+        print("resetting")
+        data['number_of_cities'] = 0
+        data['m'] = m._repr_html_
+        return render(request,"map.html",context=data)
+    except:
+        pass
+    try:
+        request.GET['city_list']
+        number_of_cities = int(request.GET['number_of_cities'])
+        visiting_cities = list()
+        for i in range(number_of_cities):
+            name = "city"+str(i)
+            city_name = request.GET[name]
+            visiting_cities.append(city_name)
+        m = support_functions.add_markers(m,visiting_cities)
+        data['visiting_cities'] = visiting_cities
+        m = m._repr_html_
+        data['m'] = m
+        return render(request,"map.html",data)
+    except:
+        pass
+    try:
+        number_of_cities = int(request.GET["number_of_cities"])
+        if number_of_cities > 0:
+            names = list()
+            for i in range(number_of_cities):
+                names.append("city"+str(i))
+            data['names'] = names
+            data['number_of_cities'] = number_of_cities
+        m = m._repr_html_
+        data['m'] = m
+    except:
+        data['number_of_cities'] = 0
+        m = m._repr_html_
+        data['m'] = m
     return render(request,"map.html",context=data)
 
 def register_new_user(request):
